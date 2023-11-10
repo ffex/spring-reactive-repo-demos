@@ -3,6 +3,8 @@ package com.example.demoreporeactiver2dbc.controller;
 
 import com.example.demoreporeactiver2dbc.data.Person;
 import com.example.demoreporeactiver2dbc.repository.r2dbc.PersonRepository;
+import com.example.demoreporeactiver2dbc.repository.r2dbc.PersonTemplateRepository;
+import com.example.demoreporeactiver2dbc.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PersonController {
     private final PersonRepository personRepository;
+
+    private final PersonService personService;
 
     @GetMapping("/v1/helloWorld")
     public String helloWorld(){
@@ -28,6 +32,12 @@ public class PersonController {
     public Mono<Person> find(@PathVariable("id") Long id){
 
         return personRepository.findById(id);
+    }
+
+    @GetMapping("/v1/persona/find/template/{name}")
+    public Flux<Person> findTemplate(@PathVariable("name") String name){
+
+        return personService.findByName(name);
     }
 
 }
